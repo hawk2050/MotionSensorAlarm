@@ -10,8 +10,18 @@ const int buzzer = 9;          // buzzer to arduino pin 9
 const int ledPin = 10;         // choose the pin for the LED
 const int pirInputPin = 2;     // choose the input pin (for PIR sensor), can use for Interrupt.
 const int momentaryButton = 3; // This can also be attached to an interrupt
-int pirState = LOW;            // we start, assuming no motion detected
+
 volatile int val = 0;          // variable for reading the pin status within the motionPIR interrupt
+
+// Variables will change:
+int ledState = LOW;             // ledState used to set the LED
+
+// Generally, you should use "unsigned long" for variables that hold time
+// The value will quickly become too large for an int to store
+unsigned long previousMillis = 0;        // will store last time LED was updated
+
+// constants won't change:
+const long interval = 100;           // interval at which to blink (milliseconds)
  
 void setup()
 {
@@ -30,12 +40,31 @@ void loop()
   
   if (val == HIGH)
   {            
-    digitalWrite(ledPin, HIGH);  // turn LED ON
-    digitalWrite(buzzer, HIGH);  // turn tone module ON
-    delay(100);
-    digitalWrite(ledPin, LOW);  // turn LED ON
-    digitalWrite(buzzer, LOW);  // turn tone module ON
-    delay(100);
+    
+    // check to see if it's time to blink the LED; that is, if the difference
+    // between the current time and last time you blinked the LED is bigger than
+    // the interval at which you want to blink the LED.
+    unsigned long currentMillis = millis();
+
+    if (currentMillis - previousMillis >= interval)
+    {
+      // save the last time you blinked the LED
+      previousMillis = currentMillis;
+
+      // if the LED is off turn it on and vice-versa:
+      if (ledState == LOW)
+      {
+        ledState = HIGH;
+      } 
+      else
+      {
+        ledState = LOW;
+      }
+
+      // set the LED with the ledState of the variable:
+      digitalWrite(ledPin, ledState); // toggle LED
+      digitalWrite(buzzer, ledState);  // toggle tone module
+    }
     
   }
 }
