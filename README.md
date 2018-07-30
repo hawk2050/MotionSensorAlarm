@@ -1,2 +1,2 @@
 # MotionSensorAlarm
-Very simple Arduino base IR motion sensor based buzzer alarm. Based on an Arduino Pro Mini 3v3, 8MHz, an HC-SR501 PIR module, a momentary push button, a 10mm Red LED, and a 5V passive buzzer module (KY-006 Passive Buzzer Module).
+Very simple Arduino base IR motion sensor based buzzer alarm. Based on an Arduino Pro Mini 3v3, 8MHz, an HC-SR501 PIR module, a momentary push button, a 10mm Red LED, and a 5V active buzzer module which draws 25 to 30mA when Vcc is applied. This is slightly too much for an Arduino I/O pin so will likely require a transistor to act as a switch, hooked up to Vcc and controlled by an I/O pin to it's base. Applying Vcc to buzzer causes it to emit a fixed frequency tone.

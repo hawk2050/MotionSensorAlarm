@@ -31,24 +31,12 @@ void loop()
   if (val == HIGH)
   {            
     digitalWrite(ledPin, HIGH);  // turn LED ON
-    if (pirState == LOW)
-    {
-      // we have just turned on
-      Serial.println("Motion detected!");
-      // We only want to print on the output change, not state
-      pirState = HIGH;
-      alarm(true);
-    }
-  } else
-  {
-    digitalWrite(ledPin, LOW); // turn LED OFF
-    if (pirState == HIGH)
-    {
-      // we have just turned of
-      Serial.println("Motion ended!");
-      // We only want to print on the output change, not state
-      pirState = LOW;
-    }
+    digitalWrite(buzzer, HIGH);  // turn tone module ON
+    delay(100);
+    digitalWrite(ledPin, LOW);  // turn LED ON
+    digitalWrite(buzzer, LOW);  // turn tone module ON
+    delay(100);
+    
   }
 }
 
@@ -63,24 +51,3 @@ void pirMotionInterrupt()
   val = digitalRead(pirInputPin);  // read input value
 }
 
-void alarm(bool enable)
-{
-  if(enable)
-  {
-    // Whoop up
-    for(int hz = 440; hz < 1000; hz++)
-    {
-      tone(buzzer, hz, 50);
-      delay(5);
-    }
-    noTone(buzzer);
-  
-    // Whoop down
-    for(int hz = 1000; hz > 440; hz--)
-    {
-      tone(buzzer, hz, 50);
-      delay(5);
-    }
-    noTone(buzzer);
-  }
-} // Repeat
